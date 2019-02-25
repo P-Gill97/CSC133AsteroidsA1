@@ -3,6 +3,7 @@ import java.util.Vector;
 
 import com.mycompany.a1.GameWorldObjects.*;
 import com.mycompany.a1.MovableObject.Asteroid;
+import com.mycompany.a1.MovableObject.NPShip;
 public class GameWorld {
 
 	Vector<GameObject> objectCollection = new Vector<GameObject>();
@@ -24,7 +25,10 @@ public class GameWorld {
 		
 	}
 	
-	public void addNewNps(){}
+	public void addNewNps(){
+		NPShip npship= new NPShip(); 
+		objectCollection.add(npship);
+	}
 	
 	
 	public void addNewBlinkingStation(){}
