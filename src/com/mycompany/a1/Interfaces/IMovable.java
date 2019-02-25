@@ -5,8 +5,9 @@ public interface IMovable {
 	
 	public int getspeed();
 	
-	public int getheading(int x, int y);
+	public int getHeading();
 	
 	public void setspeed(int speed);
-	public int setheading();
+	public void setHeading( int degree);
+	
 }

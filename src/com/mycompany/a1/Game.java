@@ -14,6 +14,7 @@ public class Game extends Form {
 	
 		gameworld = new GameWorld();
 		gameworld.init();
+		play();
 		
 	}
 	
@@ -23,6 +24,7 @@ public class Game extends Form {
 	this.addComponent(myLabel);
 	final TextField myTextField= new TextField(); 
 	this.addComponent(myTextField);
+	this.show();
 	// added UI components now add a listener
 	myTextField.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {

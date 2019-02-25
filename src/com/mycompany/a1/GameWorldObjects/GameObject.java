@@ -5,12 +5,13 @@ public abstract class GameObject {
 	private float x=0;
 	private float y=0; 
 	private int color;
+	protected Random rand = new Random ();
 	
 	public void setRandomXY() {
 		float tx = 0;
 		float ty = 0;
 		
-		Random rand = new Random ();
+		
 		
 		tx = rand.nextFloat()*1024;
 		ty = rand.nextFloat()*763; 
