@@ -51,6 +51,7 @@ public class Starter {
             current.show();
             return;
         }
+        new Game();
         Form hi = new Form("Hi World", BoxLayout.y());
         hi.add(new Label("Hi World"));
         hi.show();
