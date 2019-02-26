@@ -6,7 +6,7 @@ import com.mycompany.a1.GameWorldObjects.MovableObject;
 public class Missile extends MovableObject{
 	private int fuel; 
 	
-	public Missile(int x, int y, int heading, int speed) {
+	public Missile(float x, float y, int heading, int speed) {
 		super.setColor(ColorUtil.LTGRAY );
 		super.setX(x);
 		super.setY(y);

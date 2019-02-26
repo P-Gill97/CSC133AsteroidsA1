@@ -18,7 +18,7 @@ public class Game extends Form {
 		
 	}
 	
-	public void play() {
+	public void play() { 
 	// code to accept commands and execute
 	Label myLabel = new Label("Enter a Command: ");
 	this.addComponent(myLabel);
