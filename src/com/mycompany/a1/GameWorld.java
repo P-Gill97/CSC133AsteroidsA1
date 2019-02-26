@@ -59,7 +59,7 @@ public class GameWorld {
 			}
 		}
 		if(!Exists) {
-			System.out.println(" PS does not exis. Enter S to create ");
+			
 		}
 		return Exists; 
 	}
@@ -71,7 +71,7 @@ public class GameWorld {
 			}
 		}
 		if(!Exists) {
-			System.out.println(" Asteroid does not exist. Enter command to create ");
+			
 		}
 		return Exists; 
 	}
@@ -84,7 +84,19 @@ public class GameWorld {
 			}
 		}
 		if(!Exists) {
-			System.out.println(" Missile does not exist. Enter command to create ");
+			
+		}
+		return Exists; 
+	}
+	public boolean spaceStationExists() {
+		boolean Exists = false;
+		for(GameObject obj:objectCollection ) {
+			if(obj instanceof SpaceStation) {
+				Exists = true;
+			}
+		}
+		if(!Exists) {
+			
 		}
 		return Exists; 
 	}
@@ -150,6 +162,15 @@ public boolean deleteNPS() {
 		}
 		return x; 
 	}
+	public int MissleLocationInVector() {
+		int x = 0; 
+		for(GameObject obj:objectCollection ) {
+			if(obj instanceof Missile) {
+				x = objectCollection.indexOf(obj);
+			}
+		}
+		return x; 
+	}
 	
 	public boolean NonPlayerShipExists() {
 		boolean Exists = false;
@@ -159,7 +180,7 @@ public boolean deleteNPS() {
 			}
 		}
 		if(!Exists) {
-			System.out.println(" NPS does not exis. Enter Y to create ");
+			
 		}
 		return Exists; 
 	}
@@ -195,7 +216,7 @@ public boolean deleteNPS() {
 			
 			
 		}else {
-			System.out.println("PlaterShip already exists. Can have only 1"); 
+			
 		}
 	}
 	/*
@@ -312,7 +333,7 @@ public boolean deleteNPS() {
 				SteerableLauncher sl = ship.getPsMissleLauncher();
 				Missile missile = new Missile(ship.getX(),ship.getY(),ship.getHeading(),ship.getspeed());
 				objectCollection.add(missile); 
-				System.out.println("missle fired and added to collection");
+				
 			}else {
 				System.out.println("out of missles"); 
 				
@@ -338,9 +359,9 @@ public boolean deleteNPS() {
 				MissileLauncher sl = ship.getNPML();
 				Missile missile = new Missile(ship.getX(),ship.getY(),ship.getHeading(),ship.getspeed());
 				objectCollection.add(missile); 
-				System.out.println("NP missle fired and added to collection");
+				
 			}else {
-				System.out.println("NP out of missles"); 
+				
 				
 			}
 			
@@ -486,9 +507,37 @@ public boolean deleteNPS() {
 		}
 		
 	}
+	public void changeFuel() {
+		if(missileExists()) {
+			Missile m = (Missile) objectCollection.get(MissleLocationInVector());
+			int fuel = m.getFuel();
+			if(fuel <=1) {
+				objectCollection.remove(m);
+			}else {
+				m.setFuel(fuel-1);
+			}
+		}
+	}
+	public void blinkSpaceStation(){
+		if(spaceStationExists()) {
+			for (GameObject obj : objectCollection) {
+				if (obj instanceof SpaceStation) {
+					((SpaceStation)obj).blinkLight();
+			}
+			}
+		}
+	} 
 
 	public void printState() {
-		
+		if(PlayerShipExists()){
+			int i = PSLocationInVector();
+			PShip Ship = (PShip)objectCollection.get(i); 
+			int missleCount = Ship.getMissleCount();
+			
+			
+			System.out.println(" PLAYER SHIP MISSLE COUNT: "+missleCount);
+		}
+		System.out.println("SCORE : "+score+" Time is at : "+ticks);
 	}
 	public void printMap() {
 		for(GameObject obj: objectCollection) {
