@@ -3,6 +3,7 @@ import java.util.Vector;
 
 import com.mycompany.a1.FixedObject.SpaceStation;
 import com.mycompany.a1.GameWorldObjects.*;
+import com.mycompany.a1.Interfaces.IMovable;
 import com.mycompany.a1.MovableObject.Asteroid;
 import com.mycompany.a1.MovableObject.Missile;
 import com.mycompany.a1.MovableObject.MissileLauncher;
@@ -21,6 +22,34 @@ public class GameWorld {
 	
 	public void init() {
 		score = 0; 
+	}
+	public boolean decrementPSLife() {
+		boolean exit = false;
+		int life;
+		if(PlayerShipExists()) {
+			for(GameObject obj:objectCollection ) {
+				if(obj instanceof PShip) {
+					life = ((PShip)obj).getLife(); 
+				if(life>1) {
+					((PShip)obj).setLife(life-1);
+					return true;
+				}else {
+					((PShip)obj).setLife(life-1);
+					exit = true; 
+				}	
+				
+				
+				}
+			}
+		}
+		if(exit==true) {
+			endGame(); 
+			System.out.println("END GAME. Thanks for playing"); 
+		}
+		return false; 
+	}
+	private void endGame() {
+		objectCollection.removeAllElements();
 	}
 	public boolean PlayerShipExists() {
 		boolean Exists = false;
@@ -59,7 +88,50 @@ public class GameWorld {
 		}
 		return Exists; 
 	}
-	
+	public boolean deleteMissile() {
+		
+		for(GameObject obj:objectCollection ) {
+			if(obj instanceof Missile) {
+				objectCollection.remove(obj);
+				return true; 
+			}
+		}
+		return false; 
+		
+	}
+public boolean deletePS() {
+		
+		for(GameObject obj:objectCollection ) {
+			if(obj instanceof PShip) {
+				objectCollection.remove(obj);
+				return true; 
+			}
+		}
+		return false; 
+		
+	}
+	public boolean deleteAsteroid() {
+		
+		for(GameObject obj:objectCollection ) {
+			if(obj instanceof Asteroid) {
+				objectCollection.remove(obj); 
+				return  true;
+			}
+		}
+		return false; 
+		
+	}
+public boolean deleteNPS() {
+		
+		for(GameObject obj:objectCollection ) {
+			if(obj instanceof NPShip) {
+				objectCollection.remove(obj); 
+				return  true;
+			}
+		}
+		return false; 
+		
+	}
 	public int PSLocationInVector() {
 		int x = 0; 
 		for(GameObject obj:objectCollection ) {
@@ -316,23 +388,104 @@ public class GameWorld {
 	}
 	
 	public void missleStrikePStoAs() {
-		
+		if(missileExists() && asteroidExists()) {
+			deleteAsteroid();
+			deleteMissile();
+			score+=1; 
+			System.out.println("removed ast and missile");
+		}else {
+			
+		}
 	}
 	
-	public void missleStrikePStoNPS() {}
+	public void missleStrikePStoNPS() {
+		if(PlayerShipExists() && NonPlayerShipExists()) {
+			deleteNPS(); 
+			score+=8; 
+			System.out.println("removed nps");
+		}
+	}
 	
-	public void missleStrikeNPStoPS() {}
 	
-	public void crashPStoAs() {}
+	public void missleStrikeNPStoPS() {
+		if(PlayerShipExists() && NonPlayerShipExists()) {
+			deletePS(); 
+			System.out.println("removed ps");
+		}
+	}
+	
+	public void crashPStoAs() {
+		if(PlayerShipExists() && asteroidExists()) {
+			deletePS(); 
+			deleteAsteroid(); 
+			System.out.println("removed ps and asteroid");
+		}
+	}
 
-	public void crashPStoNPS() {}
+	public void crashPStoNPS() {
+		if(PlayerShipExists() && NonPlayerShipExists()) {
+			deleteNPS(); 
+			decrementPSLife();
+			
+			System.out.println("removed ps and asteroid");
+		}
+	}
 
-	public void crashAstoAs() {}
+	public void crashAstoAs() {
+		if( asteroidExists()) {
+		 
+		deleteAsteroid(); 
+		System.out.println("removed 1 asteroid");
+	}
+		if( asteroidExists()) {
+			 
+			deleteAsteroid(); 
+			System.out.println("removed 2nd asteroid");
+		}
+		}
 	
 	
-	public void crashAstoNPS() {}
+	public void crashAstoNPS() {
+		if(asteroidExists() && NonPlayerShipExists()) {
+			deleteNPS(); 
+			deleteAsteroid(); 
+			System.out.println("removed nps");
+		}
+	}
 	
-	public void clockTicked() {}
+	
+	public void clockTicked() {
+		moveObjects();
+		changeFuel(); 
+		blinkSpaceStation(); 
+		ticks++; 
+		
+	}
+	public void moveObjects() {
+		boolean moving = false; 
+		for (GameObject obj : objectCollection) {
+			if (obj instanceof IMovable) {
+				((IMovable) obj).move();
+				moving = true; 
+			
+			} 
+		}
+		// moving steerablemissle for PS
+		if(moving = true) {
+			if (PlayerShipExists() == true) {
+				for (GameObject obj : objectCollection) {
+					if (obj instanceof PShip) {
+						SteerableLauncher sl = ((PShip) obj).getPsMissleLauncher();
+						sl.setX(obj.getX());
+						sl.setY(obj.getY());
+				}
+				}
+			} else {
+				System.out.println(" ship dne ");
+			}
+		}
+		
+	}
 
 	public void printState() {
 		
@@ -342,7 +495,7 @@ public class GameWorld {
 			System.out.println(obj.toString());
 		}
 	}
-	public void eliminatedPsToNps(){}
+	
 	
 	public void quitGame(){
 		System.exit(0);
